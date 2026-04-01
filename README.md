@@ -1,6 +1,7 @@
 # Backlog Daily Document Creator
 
-Automatically creates daily activity log documents in Backlog using GitHub Actions and Deno.
+Automatically creates daily activity log documents in Backlog using GitHub
+Actions and Deno.
 
 ## Features
 
@@ -58,12 +59,13 @@ deno task create
 
 ### 5. Customize Schedule
 
-To change the execution time, edit the cron setting in `.github/workflows/daily-document.yml`:
+To change the execution time, edit the cron setting in
+`.github/workflows/daily-document.yml`:
 
 ```yaml
 schedule:
   # Run at JST 09:00 (UTC 00:00) every day
-  - cron: '0 0 * * *'
+  - cron: "0 0 * * *"
 ```
 
 Cron format: `'minute hour day month day_of_week'` (UTC time)
@@ -82,7 +84,8 @@ GitHub Actions will automatically run at the scheduled time.
 
 ### Manual Execution
 
-Go to the Actions tab in your GitHub repository, select the `Create Daily Backlog Document` workflow, and click "Run workflow".
+Go to the Actions tab in your GitHub repository, select the
+`Create Daily Backlog Document` workflow, and click "Run workflow".
 
 ### Local Execution
 

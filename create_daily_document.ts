@@ -26,15 +26,15 @@ interface WikiResponse {
 }
 
 const REQUIRED_ENV_VARS = [
-  'BACKLOG_HOST',
-  'BACKLOG_API_KEY',
-  'BACKLOG_PROJECT_ID_OR_KEY',
+  "BACKLOG_HOST",
+  "BACKLOG_API_KEY",
+  "BACKLOG_PROJECT_ID_OR_KEY",
 ] as const;
 
 function validateEnv(): void {
   const missing = REQUIRED_ENV_VARS.filter((key) => !Deno.env.get(key));
   if (missing.length > 0) {
-    console.error('Missing required environment variables:');
+    console.error("Missing required environment variables:");
     missing.forEach((key) => console.error(`  - ${key}`));
     Deno.exit(1);
   }
@@ -42,23 +42,23 @@ function validateEnv(): void {
 
 function getConfig(): BacklogConfig {
   return {
-    host: Deno.env.get('BACKLOG_HOST')!,
-    apiKey: Deno.env.get('BACKLOG_API_KEY')!,
-    projectIdOrKey: Deno.env.get('BACKLOG_PROJECT_ID_OR_KEY')!,
-    parentFolderId: Deno.env.get('BACKLOG_PARENT_FOLDER_ID'),
+    host: Deno.env.get("BACKLOG_HOST")!,
+    apiKey: Deno.env.get("BACKLOG_API_KEY")!,
+    projectIdOrKey: Deno.env.get("BACKLOG_PROJECT_ID_OR_KEY")!,
+    parentFolderId: Deno.env.get("BACKLOG_PARENT_FOLDER_ID"),
   };
 }
 
 function getTodayString(): string {
   const now = new Date();
   const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
 function getDayOfWeek(date: Date): string {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return days[date.getDay()];
 }
 
@@ -92,7 +92,7 @@ async function createWikiPage(
   content: string,
 ): Promise<WikiResponse> {
   const url = new URL(`https://${config.host}/api/v2/wikis`);
-  url.searchParams.set('apiKey', config.apiKey);
+  url.searchParams.set("apiKey", config.apiKey);
 
   const body = new URLSearchParams({
     projectIdOrKey: config.projectIdOrKey,
@@ -101,13 +101,13 @@ async function createWikiPage(
   });
 
   if (config.parentFolderId) {
-    body.set('parentFolderId', config.parentFolderId);
+    body.set("parentFolderId", config.parentFolderId);
   }
 
   const response = await fetch(url.toString(), {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      "Content-Type": "application/x-www-form-urlencoded",
     },
     body: body.toString(),
   });
@@ -123,8 +123,8 @@ async function createWikiPage(
 }
 
 async function main() {
-  console.log('Backlog Daily Document Creator');
-  console.log('='.repeat(50));
+  console.log("Backlog Daily Document Creator");
+  console.log("=".repeat(50));
 
   validateEnv();
   const config = getConfig();
@@ -144,15 +144,17 @@ async function main() {
   }
   console.log();
 
-  console.log('Creating document...');
+  console.log("Creating document...");
 
   try {
     const result = await createWikiPage(config, title, content);
-    console.log('Document created successfully!');
+    console.log("Document created successfully!");
     console.log(`Document ID: ${result.id}`);
-    console.log(`URL: https://${config.host}/wiki/${config.projectIdOrKey}/${result.id}`);
+    console.log(
+      `URL: https://${config.host}/wiki/${config.projectIdOrKey}/${result.id}`,
+    );
   } catch (error) {
-    console.error('Failed to create document:', error);
+    console.error("Failed to create document:", error);
     Deno.exit(1);
   }
 }
