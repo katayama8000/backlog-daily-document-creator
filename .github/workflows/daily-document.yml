@@ -24,7 +24,7 @@ jobs:
           BACKLOG_HOST: ${{ secrets.BACKLOG_HOST }}
           BACKLOG_API_KEY: ${{ secrets.BACKLOG_API_KEY }}
           BACKLOG_PROJECT_ID_OR_KEY: ${{ secrets.BACKLOG_PROJECT_ID_OR_KEY }}
-          BACKLOG_PARENT_FOLDER_ID: ${{ secrets.BACKLOG_PARENT_FOLDER_ID }}
+          BACKLOG_PARENT_DOCUMENT_ID: ${{ secrets.BACKLOG_PARENT_DOCUMENT_ID }}
         run: deno task create
 
       - name: Notify completion

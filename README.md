@@ -33,7 +33,17 @@ You'll need the following information:
 - **BACKLOG_HOST**: Your space URL (e.g., `your-space.backlog.jp`)
 - **BACKLOG_API_KEY**: Your API key
 - **BACKLOG_PROJECT_ID_OR_KEY**: Project key (e.g., `DEMO`)
-- **BACKLOG_PARENT_FOLDER_ID**: Parent folder ID (optional)
+- **BACKLOG_PARENT_DOCUMENT_ID** (optional): Parent document ID
+
+To find the parent document ID, check the Backlog document URL:
+
+```
+https://your-space.backlog.jp/documents/123456
+                                         ^^^^^^ This is the document ID
+```
+
+If `BACKLOG_PARENT_DOCUMENT_ID` is not set, documents will be created at the
+root level.
 
 ### 3. Local Testing
 
@@ -55,7 +65,7 @@ deno task create
    - `BACKLOG_HOST`: Your Backlog host URL
    - `BACKLOG_API_KEY`: Your Backlog API key
    - `BACKLOG_PROJECT_ID_OR_KEY`: Project key
-   - `BACKLOG_PARENT_FOLDER_ID`: Parent folder ID (optional)
+   - `BACKLOG_PARENT_DOCUMENT_ID` (optional): Parent document ID
 
 ### 5. Customize Schedule
 
@@ -122,10 +132,11 @@ _Auto-generated: 2026-04-01T00:00:00.000Z_
 - Verify that your API key is correct
 - Check that the API key has the necessary permissions
 
-### Folder Not Found
+### Parent Document Not Found
 
-- Verify that BACKLOG_PARENT_FOLDER_ID is correct
-- Check that you have access permissions to that folder
+- Verify that BACKLOG_PARENT_DOCUMENT_ID is correct
+- Check that you have access permissions to that document
+- Ensure the parent document exists in the same project
 
 ### API Request Failed
 
@@ -161,8 +172,8 @@ backlog-daily-document/
 
 This project uses the Backlog API:
 
-- Endpoint: `POST /api/v2/wikis`
-- Documentation: https://developer.nulab.com/docs/backlog/
+- Endpoint: `POST /api/v2/documents`
+- Documentation: https://developer.nulab.com/docs/backlog/api/2/add-document/
 
 ## License
 
