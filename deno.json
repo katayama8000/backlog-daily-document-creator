@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "create": "deno run --allow-env --allow-net create_daily_document.ts"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window"]
+  }
+}

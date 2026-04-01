@@ -1,0 +1,36 @@
+name: Create Daily Backlog Document
+
+on:
+  schedule:
+    # Run at JST 09:00 (UTC 00:00) every day
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  create-document:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Create daily document
+        env:
+          BACKLOG_HOST: ${{ secrets.BACKLOG_HOST }}
+          BACKLOG_API_KEY: ${{ secrets.BACKLOG_API_KEY }}
+          BACKLOG_PROJECT_ID_OR_KEY: ${{ secrets.BACKLOG_PROJECT_ID_OR_KEY }}
+          BACKLOG_PARENT_FOLDER_ID: ${{ secrets.BACKLOG_PARENT_FOLDER_ID }}
+        run: deno task create
+
+      - name: Notify completion
+        if: success()
+        run: echo "Daily document created successfully"
+
+      - name: Notify failure
+        if: failure()
+        run: echo "Failed to create daily document"
