@@ -91,16 +91,10 @@ function getDayOfWeek(date: Date): string {
 
 function generateDocumentContent(): string {
   const now = new Date();
-  const today = getTodayString();
-  const dayOfWeek = getDayOfWeek(now);
-
-  return `# ${today} (${dayOfWeek}) Activity Log
+  return `
 
 ## Today's Schedule
 -
-
-## Completed Tasks
-
 
 ## Notes
 
