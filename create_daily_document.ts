@@ -80,12 +80,12 @@ function getTodayString(): string {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
+  const day = String(now.getDate() + 1).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
 function getDayOfWeek(date: Date): string {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
   return days[date.getDay()];
 }
 
@@ -96,7 +96,7 @@ function generateDocumentContent(): string {
 ## Today's Schedule
 -
 
-## Notes
+## What I Did Today
 
 
 ## Issues / Next Actions
