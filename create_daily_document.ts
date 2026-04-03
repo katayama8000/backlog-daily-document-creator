@@ -76,17 +76,30 @@ async function getProjectId(
   return project.id;
 }
 
-function getTodayString(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate() + 1).padStart(2, "0");
+function getTargetDate(): Date {
+  const today = new Date();
+  // Friday (5) -> skip weekend, target Monday (+3)
+  const daysToAdd = today.getDay() === 5 ? 3 : 1;
+  const target = new Date(today);
+  target.setDate(today.getDate() + daysToAdd);
+  return target;
+}
+
+function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 }
 
 function getDayOfWeek(date: Date): string {
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
   return days[date.getDay()];
+}
+
+function isWeekend(date: Date): boolean {
+  const day = date.getDay();
+  return day === 0 || day === 6;
 }
 
 function generateDocumentContent(): string {
@@ -151,13 +164,21 @@ async function main() {
   validateEnv();
   const config = getConfig();
 
-  const today = getTodayString();
-  const now = new Date();
-  const dayOfWeek = getDayOfWeek(now);
-  const title = `${today} (${dayOfWeek}) Activity Log`;
+  const targetDate = getTargetDate();
+  const targetDateString = formatDate(targetDate);
+  const dayOfWeek = getDayOfWeek(targetDate);
+
+  if (isWeekend(targetDate)) {
+    console.log(
+      `Skipping document creation: target date ${targetDateString} (${dayOfWeek}) is weekend.`,
+    );
+    return;
+  }
+
+  const title = `${targetDateString} (${dayOfWeek}) Activity Log`;
   const content = generateDocumentContent();
 
-  console.log(`Date: ${today} (${dayOfWeek})`);
+  console.log(`Date: ${targetDateString} (${dayOfWeek})`);
   console.log(`Title: ${title}`);
   console.log(`Host: ${config.host}`);
   console.log(`Project: ${config.projectIdOrKey}`);
